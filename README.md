@@ -1,4 +1,4 @@
-# nanoloop
+# nanoloop-transformer
 
 The smallest readable looped transformer. One file of PyTorch (`nanoloop.py`):
 a char-level GPT whose middle block runs K times with the same weights. You
@@ -28,7 +28,8 @@ of 3 copies of slightly different functions.
 ## Quickstart
 
 ```bash
-pip install torch
+git clone https://github.com/albertlieyingadrian/nanoloop-transformer && cd nanoloop-transformer
+pip install -r requirements.txt   # just torch
 python nanoloop.py --mode compare            # chain task: standard vs looped, ~10 min on a Mac (MPS)
 python nanoloop.py --mode sample --out out/looped.pt --loops 1   # watch it fail with 1 loop
 python nanoloop.py --mode sample --out out/looped.pt --loops 4   # and succeed with 4
@@ -118,14 +119,33 @@ two digits in the prompt. `program.md` has the log.
 - `program.md`: a brief for running small experiments and logging them.
 - `results.tsv`: the runs behind the tables above.
 
+## Limitations
+
+- Toy scale: 605k parameters, one synthetic task and a small Shakespeare run, one seed per row of the table (seed
+  1337). Treat gaps under about 5 points as noise until you rerun with another seed.
+- Times are for an Apple M-series laptop (MPS). On a plain CPU expect the 6000-step chain runs to take several times
+  longer; `--steps`, `--batch_size` and `--n_embd` shrink them.
+- No KV cache, no mixed precision, no early exit: the code is written to be read, not to be fast.
+
 ## Where to go next
 
-- Universal Transformers (Dehghani et al., 2018): https://arxiv.org/abs/1807.03819, the original shared-weights, looped transformer.
-- Looped Transformers are Better at Learning Learning Algorithms (Yang et al., ICLR 2024): https://arxiv.org/abs/2311.12424, code at https://github.com/Leiay/looped_transformer. Input injection and the train-K / test-K story.
-- Scaling up Test-Time Compute with Latent Reasoning: A Recurrent Depth Approach (Huginn; Geiping et al., 2025): https://arxiv.org/abs/2502.05171, prelude / recurrent core / coda at 3.5B parameters with random K.
-- Scaling Latent Reasoning via Looped Language Models (Ouro; 2025): https://arxiv.org/abs/2510.25741, looped LMs pretrained at scale with learned early exit.
-- The Inkling 2 Mini blog post on looped models.
-- Inspiration for the shape of this repo: karpathy/nanoGPT (https://github.com/karpathy/nanoGPT), karpathy/micrograd (https://github.com/karpathy/micrograd) and karpathy/autoresearch (https://github.com/karpathy/autoresearch).
+- The full course this file grew out of, with tests per stage, baselines and six ways to read the loops:
+  https://github.com/albertlieyingadrian/build-your-own-looped-transformer
+
+## Credits and further reading
+
+- Universal Transformers (2018), https://arxiv.org/abs/1807.03819: the original shared-weights, looped transformer.
+- Looped Transformers are Better at Learning Learning Algorithms (ICLR 2024), https://arxiv.org/abs/2311.12424, code
+  https://github.com/Leiay/looped_transformer: input injection and the train-K / test-K story.
+- Scaling up Test-Time Compute with Latent Reasoning: A Recurrent Depth Approach (Huginn, 2025),
+  https://arxiv.org/abs/2502.05171: prelude / recurrent core / coda at 3.5B parameters with random K.
+- Scaling Latent Reasoning via Looped Language Models (Ouro, 2025), https://arxiv.org/abs/2510.25741: looped LMs
+  pretrained at scale with learned early exit.
+- Inkling 2 Mini, https://huggingface.co/blog/inkling2mini: a released model that runs its middle layers three times.
+- The shape of this repo: nanoGPT (https://github.com/karpathy/nanoGPT), micrograd
+  (https://github.com/karpathy/micrograd) and autoresearch (https://github.com/karpathy/autoresearch). No code is
+  copied from them.
+- Tiny Shakespeare comes from the char-rnn repo, https://github.com/karpathy/char-rnn, downloaded on first use.
 
 ## License
 
