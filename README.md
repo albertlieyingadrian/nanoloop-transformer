@@ -29,7 +29,7 @@ of 3 copies of slightly different functions.
 
 ```bash
 git clone https://github.com/albertlieyingadrian/nanoloop-transformer && cd nanoloop-transformer
-pip install -r requirements.txt   # just torch
+pip install -r requirements.txt   # torch (and numpy)
 python nanoloop.py --mode compare            # chain task: standard vs looped, ~10 min on a Mac (MPS)
 python nanoloop.py --mode sample --out out/looped.pt --loops 1   # watch it fail with 1 loop
 python nanoloop.py --mode sample --out out/looped.pt --loops 4   # and succeed with 4
@@ -130,7 +130,7 @@ two digits in the prompt. `program.md` has the log.
 ## Where to go next
 
 - The full course this file grew out of, with tests per stage, baselines and six ways to read the loops:
-  https://github.com/albertlieyingadrian/build-your-own-looped-transformer
+  https://github.com/albertlieyingadrian/build-a-looped-transformer
 
 ## Credits and further reading
 
